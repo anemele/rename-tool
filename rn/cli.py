@@ -6,10 +6,12 @@ from .job import (
     rename_extension,
     rename_lower,
     rename_md5,
-    rename_prepend_prefix,
+    rename_add_prefix,
     rename_random,
     rename_remove_prefix,
     rename_upper,
+    rename_add_suffix,
+    rename_remove_suffix,
 )
 from .log import logger
 from .pp import preprocess_0, preprocess_1
@@ -60,23 +62,57 @@ _gen(rename_lower, 'low')
 _gen(rename_upper, 'upp')
 
 
-@cli.command(help=rename_prepend_prefix.__doc__)
+@cli.group(name='prefix', cls=OrderedGroup)
+@click.pass_context
+def cli_prefix(ctx: click.Context):
+    """rename with prefix"""
+
+
+@cli_prefix.command(name='add', help=rename_add_prefix.__doc__)
 @click.pass_context
 @click.argument('file', nargs=-1, required=True, type=str)
-@click.option('-p', '--prefix', type=str, help='prefix')
-@preprocess_1(rename_prepend_prefix)
-def add_prefix(ctx: click.Context, file, prefix: Optional[str]):
+@click.option('--xfix', type=str, help='prefix')
+@preprocess_1(rename_add_prefix)
+def add_prefix(ctx: click.Context, file, xfix: Optional[str]):
     logger.debug(f'{ctx.obj=}')
     logger.debug(f'{file=}')
-    logger.debug(f'{prefix=}')
+    logger.debug(f'{xfix=}')
 
 
-@cli.command(help=rename_remove_prefix.__doc__)
+@cli_prefix.command(name='rm', help=rename_remove_prefix.__doc__)
 @click.pass_context
 @click.argument('file', nargs=-1, required=True, type=str)
-@click.option('-p', '--prefix', type=str, help='prefix')
+@click.option('--xfix', type=str, help='prefix')
 @preprocess_1(rename_remove_prefix)
-def rm_prefix(ctx: click.Context, file, prefix: Optional[str]):
+def remove_prefix(ctx: click.Context, file, xfix: Optional[str]):
     logger.debug(f'{ctx.obj=}')
     logger.debug(f'{file=}')
-    logger.debug(f'{prefix=}')
+    logger.debug(f'{xfix=}')
+
+
+@cli.group(name='suffix', cls=OrderedGroup)
+@click.pass_context
+def cli_suffix(ctx: click.Context):
+    """rename with suffix"""
+
+
+@cli_suffix.command(name='add', help=rename_add_suffix.__doc__)
+@click.pass_context
+@click.argument('file', nargs=-1, required=True, type=str)
+@click.option('--xfix', type=str, help='suffix')
+@preprocess_1(rename_add_suffix)
+def add_suffix(ctx: click.Context, file, xfix: Optional[str]):
+    logger.debug(f'{ctx.obj=}')
+    logger.debug(f'{file=}')
+    logger.debug(f'{xfix=}')
+
+
+@cli_suffix.command(name='rm', help=rename_remove_suffix.__doc__)
+@click.pass_context
+@click.argument('file', nargs=-1, required=True, type=str)
+@click.option('--xfix', type=str, help='suffix')
+@preprocess_1(rename_remove_suffix)
+def remove_suffix(ctx: click.Context, file, xfix: Optional[str]):
+    logger.debug(f'{ctx.obj=}')
+    logger.debug(f'{file=}')
+    logger.debug(f'{xfix=}')

@@ -30,10 +30,10 @@ def if_exist_then_rename(func: T_JOB_P):
 def preprocess_1(job: T_JOB_P):
     def decorator(func):
         @wraps(func)
-        def wrapper(ctx: click.Context, file: Tuple[str], prefix: Optional[str]):
+        def wrapper(ctx: click.Context, file: Tuple[str], xfix: Optional[str]):
             logger.debug(f'{ctx.obj=}')
             logger.debug(f'{file=}')
-            logger.debug(f'{prefix=}')
+            logger.debug(f'{xfix=}')
 
             file_list = chain.from_iterable(map(glob.iglob, file))
             if ctx.obj['f']:
@@ -41,11 +41,11 @@ def preprocess_1(job: T_JOB_P):
             if ctx.obj['d']:
                 file_list = filter(isdir, file_list)
 
-            prefix_ = '' if prefix is None else prefix
+            xfix_ = '' if xfix is None else xfix
             for path in map(Path, file_list):
-                job(path, prefix_)
+                job(path, xfix_)
 
-            return func(ctx, file, prefix)
+            return func(ctx, file, xfix)
 
         return wrapper
 

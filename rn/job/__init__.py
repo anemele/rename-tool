@@ -5,4 +5,9 @@ from ._job_0 import (
     rename_random,
     rename_upper,
 )
-from ._job_1 import rename_prepend_prefix, rename_remove_prefix
+from ._job_1 import (
+    rename_add_prefix,
+    rename_add_suffix,
+    rename_remove_prefix,
+    rename_remove_suffix,
+)
