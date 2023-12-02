@@ -1,15 +1,12 @@
 import hashlib
 import random
-import string
 from pathlib import Path
 
 import filetype
 
+from .consts import CHAR_SET, NAME_LENGTH
 from .log import logger
 from .pp import only_file
-
-CHAR_SET = string.ascii_lowercase + string.digits
-NAME_LENGTH = 6
 
 
 def rename_random(filepath: Path):
