@@ -1,4 +1,3 @@
-""" Preprocessing """
 import glob
 from functools import wraps
 from itertools import chain
@@ -8,11 +7,11 @@ from typing import Tuple
 
 import click
 
-from .log import logger
-from .types import T_JOB
+from ..log import logger
+from ..types import T_JOB, T_JOB_N
 
 
-def only_file(func: T_JOB):
+def only_file(func: T_JOB_N):
     @wraps(func)
     def wrapper(file: Path):
         if not file.is_file():
@@ -24,7 +23,7 @@ def only_file(func: T_JOB):
     return wrapper
 
 
-def preprocess(job: T_JOB):
+def preprocess_0(job: T_JOB):
     def decorator(func):
         @wraps(func)
         def wrapper(ctx: click.Context, file: Tuple[str]):

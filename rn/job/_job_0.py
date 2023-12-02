@@ -4,9 +4,9 @@ from pathlib import Path
 
 import filetype
 
+from ..log import logger
+from ..pp import only_file
 from .consts import CHAR_SET, NAME_LENGTH
-from .log import logger
-from .pp import only_file
 
 
 def rename_random(filepath: Path):
@@ -18,12 +18,12 @@ def rename_random(filepath: Path):
         return ''.join(char_list)
 
     while True:
-        new_name = filepath.with_stem(rng())  # v3.9+
-        if not new_name.exists():
+        new_path = filepath.with_stem(rng())  # v3.9+
+        if not new_path.exists():
             break
 
-    filepath.rename(new_name)
-    logger.info(f'done: {filepath} --> {new_name}')
+    filepath.rename(new_path)
+    logger.info(f'done: {filepath} --> {new_path}')
 
 
 @only_file
@@ -36,12 +36,12 @@ def rename_extension(filepath: Path):
         logger.error(f'cannot guess extension: {filepath.name}')
         return
 
-    new_name = filepath.with_suffix(f'.{ext}')
-    if new_name == filepath:
-        logger.warning(f'exists: {new_name}')
+    new_path = filepath.with_suffix(f'.{ext}')
+    if new_path == filepath:
+        logger.warning(f'exists: {new_path}')
     else:
-        filepath.rename(new_name)
-        logger.info(f'done: {filepath} --> {new_name}')
+        filepath.rename(new_path)
+        logger.info(f'done: {filepath} --> {new_path}')
 
 
 @only_file
@@ -61,13 +61,13 @@ def rename_md5(filepath: Path):
 
 def rename_lower(filepath: Path):
     """convert to lower"""
-    new = filepath.rename(filepath.with_name(filepath.name.lower()))
+    new_path = filepath.rename(filepath.with_name(filepath.name.lower()))
 
-    logger.info(f'done: {filepath} --> {new}')
+    logger.info(f'done: {filepath} --> {new_path}')
 
 
 def rename_upper(filepath: Path):
     """convert to upper"""
-    new = filepath.rename(filepath.with_name(filepath.name.upper()))
+    new_path = filepath.rename(filepath.with_name(filepath.name.upper()))
 
-    logger.info(f'done: {filepath} --> {new}')
+    logger.info(f'done: {filepath} --> {new_path}')
