@@ -35,17 +35,18 @@ def preprocess_1(job: T_JOB_P):
             logger.debug(f'{file=}')
             logger.debug(f'{xfix=}')
 
+            if xfix is None:
+                logger.error('no pre/suf-fix given')
+                return
+
             file_list = chain.from_iterable(map(glob.iglob, file))
             if ctx.obj['f']:
                 file_list = filter(isfile, file_list)
             if ctx.obj['d']:
                 file_list = filter(isdir, file_list)
 
-            xfix_ = '' if xfix is None else xfix
             for path in map(Path, file_list):
-                job(path, xfix_)
-
-            return func(ctx, file, xfix)
+                job(path, xfix)
 
         return wrapper
 

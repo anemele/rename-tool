@@ -39,8 +39,6 @@ def preprocess_0(job: T_JOB):
             for path in map(Path, file_list):
                 job(path)
 
-            return func(ctx, file)
-
         return wrapper
 
     return decorator
