@@ -1,4 +1,5 @@
 from typing import Optional
+
 import click
 
 from .job import (
@@ -15,7 +16,15 @@ from .pp import preprocess_0, preprocess_1
 from .types import T_JOB_N
 
 
-@click.group(help='rename file or directory with given condition')
+# https://github.com/pallets/click/issues/513#issuecomment-504158316
+# https://zhuanlan.zhihu.com/p/73426505
+# requires v3.6+
+class OrderedGroup(click.Group):
+    def list_commands(self, _) -> list[str]:
+        return list(self.commands.keys())
+
+
+@click.group(cls=OrderedGroup)
 @click.option(
     '-f', '--only-file', type=bool, is_flag=True, default=False, help='only file'
 )
@@ -24,6 +33,7 @@ from .types import T_JOB_N
 )
 @click.pass_context
 def cli(ctx: click.Context, only_file: bool, only_dir: bool):
+    """rename file or directory with given condition"""
     logger.debug(f'{only_file=}')
     logger.debug(f'{only_dir=}')
     ctx.obj = dict(f=only_file, d=only_dir)
@@ -55,7 +65,7 @@ _gen(rename_upper, 'upp')
 @click.argument('file', nargs=-1, required=True, type=str)
 @click.option('-p', '--prefix', type=str, help='prefix')
 @preprocess_1(rename_prepend_prefix)
-def add_prefix(ctx: click.Context, file, prefix: str):
+def add_prefix(ctx: click.Context, file, prefix: Optional[str]):
     logger.debug(f'{ctx.obj=}')
     logger.debug(f'{file=}')
     logger.debug(f'{prefix=}')
