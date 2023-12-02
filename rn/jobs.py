@@ -14,18 +14,19 @@ NAME_LENGTH = 6
 
 def rename_random(filepath: Path):
     """use random generator"""
-    suffix = filepath.suffix
+
+    def rng():
+        """random name generator"""
+        char_list = random.choices(CHAR_SET, k=NAME_LENGTH)
+        return ''.join(char_list)
 
     while True:
-        char_list = random.choices(CHAR_SET, k=NAME_LENGTH)
-        name = ''.join(char_list)
-        new_name = Path(f'{name}{suffix}')
-        if new_name.exists():
-            continue
-        filepath.rename(new_name)
+        new_name = filepath.with_stem(rng())  # v3.9+
+        if not new_name.exists():
+            break
 
-        logger.info(f'done: {filepath} --> {new_name}')
-        break
+    filepath.rename(new_name)
+    logger.info(f'done: {filepath} --> {new_name}')
 
 
 @only_file
