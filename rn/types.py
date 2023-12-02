@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Callable
 
-T_JOB = Callable[[str], None]
+T_JOB = Callable[[Path], None]

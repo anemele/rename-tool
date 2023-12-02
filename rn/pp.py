@@ -3,12 +3,25 @@ import glob
 from functools import wraps
 from itertools import chain
 from os.path import isdir, isfile
+from pathlib import Path
 from typing import Tuple
 
 import click
 
 from .log import logger
 from .types import T_JOB
+
+
+def only_file(func: T_JOB):
+    @wraps(func)
+    def wrapper(file: Path):
+        if not file.is_file():
+            logger.error(f'not a file: {file}')
+            return
+
+        return func(file)
+
+    return wrapper
 
 
 def preprocess(job: T_JOB):
@@ -24,7 +37,7 @@ def preprocess(job: T_JOB):
             if ctx.obj['d']:
                 file_list = filter(isdir, file_list)
 
-            for path in file_list:
+            for path in map(Path, file_list):
                 job(path)
 
             return func(ctx, file)
