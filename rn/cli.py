@@ -3,15 +3,15 @@ from typing import Optional
 import click
 
 from .job import (
+    rename_add_prefix,
+    rename_add_suffix,
     rename_extension,
     rename_lower,
     rename_md5,
-    rename_add_prefix,
     rename_random,
     rename_remove_prefix,
-    rename_upper,
-    rename_add_suffix,
     rename_remove_suffix,
+    rename_upper,
 )
 from .log import logger
 from .pp import preprocess_0, preprocess_1

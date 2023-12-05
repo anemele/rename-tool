@@ -5,36 +5,36 @@ from ..pp import if_exist_then_rename
 
 
 @if_exist_then_rename
-def rename_remove_prefix(filepath: Path, prefix: str) -> Path | None:
-    """remove prefix, if `filepath` not starts with `prefix` then skip"""
-    name = filepath.name
+def rename_remove_prefix(path: Path, prefix: str) -> Path | None:
+    """remove prefix, if `path` not starts with `prefix` then skip"""
+    name = path.name
 
     if not name.startswith(prefix):
-        logger.warning(f'not start with `{prefix}`: {filepath}')
+        logger.warning(f'not start with `{prefix}`: {path}')
         return
 
-    return filepath.with_name(name.lstrip(prefix))
+    return path.with_name(name.lstrip(prefix))
 
 
 @if_exist_then_rename
-def rename_add_prefix(filepath: Path, prefix: str):
+def rename_add_prefix(path: Path, prefix: str):
     """prepend prefix"""
-    return filepath.with_name(f'{prefix}{filepath.name}')
+    return path.with_name(f'{prefix}{path.name}')
 
 
 @if_exist_then_rename
-def rename_remove_suffix(filepath: Path, suffix: str) -> Path | None:
-    """remove suffix, if `filepath` not ends with `suffix` then skip"""
-    name = filepath.stem
+def rename_remove_suffix(path: Path, suffix: str) -> Path | None:
+    """remove suffix, if `path` not ends with `suffix` then skip"""
+    name = path.stem
 
     if not name.endswith(suffix):
-        logger.warning(f'not end with `{suffix}`: {filepath}')
+        logger.warning(f'not end with `{suffix}`: {path}')
         return
 
-    return filepath.with_name(name.rstrip(suffix))
+    return path.with_name(name.rstrip(suffix))
 
 
 @if_exist_then_rename
-def rename_add_suffix(filepath: Path, suffix: str):
+def rename_add_suffix(path: Path, suffix: str):
     """prepend suffix"""
-    return filepath.with_stem(f'{filepath.stem}{suffix}')
+    return path.with_stem(f'{path.stem}{suffix}')

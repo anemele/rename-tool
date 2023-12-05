@@ -9,7 +9,7 @@ from ..pp import only_file
 from .consts import CHAR_SET, NAME_LENGTH
 
 
-def rename_random(filepath: Path):
+def rename_random(path: Path):
     """use random generator"""
 
     def rng():
@@ -18,56 +18,56 @@ def rename_random(filepath: Path):
         return ''.join(char_list)
 
     while True:
-        new_path = filepath.with_stem(rng())  # v3.9+
+        new_path = path.with_stem(rng())  # v3.9+
         if not new_path.exists():
             break
 
-    filepath.rename(new_path)
-    logger.info(f'done: {filepath} --> {new_path}')
+    path.rename(new_path)
+    logger.info(f'done: {path} --> {new_path}')
 
 
 @only_file
-def rename_extension(filepath: Path):
+def rename_extension(path: Path):
     """use filetype to determine extension"""
-    content = filepath.read_bytes()
+    content = path.read_bytes()
     ext = filetype.guess_extension(content)
 
     if ext is None:
-        logger.error(f'cannot guess extension: {filepath.name}')
+        logger.error(f'cannot guess extension: {path.name}')
         return
 
-    new_path = filepath.with_suffix(f'.{ext}')
-    if new_path == filepath:
+    new_path = path.with_suffix(f'.{ext}')
+    if new_path == path:
         logger.warning(f'exists: {new_path}')
     else:
-        filepath.rename(new_path)
-        logger.info(f'done: {filepath} --> {new_path}')
+        path.rename(new_path)
+        logger.info(f'done: {path} --> {new_path}')
 
 
 @only_file
-def rename_md5(filepath: Path):
+def rename_md5(path: Path):
     """use file md5"""
-    content = filepath.read_bytes()
+    content = path.read_bytes()
     md5 = hashlib.md5(content)
 
-    new_path = filepath.parent / (md5.hexdigest() + filepath.suffix)
+    new_path = path.parent / (md5.hexdigest() + path.suffix)
 
-    if new_path == filepath or new_path.exists():
-        logger.warning(f'exists: {filepath} --> {new_path}')
+    if new_path == path or new_path.exists():
+        logger.warning(f'exists: {path} --> {new_path}')
     else:
-        filepath.rename(new_path)
-        logger.info(f'done: {filepath} --> {new_path}')
+        path.rename(new_path)
+        logger.info(f'done: {path} --> {new_path}')
 
 
-def rename_lower(filepath: Path):
+def rename_lower(path: Path):
     """convert to lower"""
-    new_path = filepath.rename(filepath.with_name(filepath.name.lower()))
+    new_path = path.rename(path.with_name(path.name.lower()))
 
-    logger.info(f'done: {filepath} --> {new_path}')
+    logger.info(f'done: {path} --> {new_path}')
 
 
-def rename_upper(filepath: Path):
+def rename_upper(path: Path):
     """convert to upper"""
-    new_path = filepath.rename(filepath.with_name(filepath.name.upper()))
+    new_path = path.rename(path.with_name(path.name.upper()))
 
-    logger.info(f'done: {filepath} --> {new_path}')
+    logger.info(f'done: {path} --> {new_path}')

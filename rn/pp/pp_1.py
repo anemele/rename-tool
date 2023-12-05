@@ -13,16 +13,22 @@ from ..types import T_JOB_P
 
 def if_exist_then_rename(func: T_JOB_P):
     @wraps(func)
-    def wrapper(filepath: Path, prefix: str):
-        new_path = func(filepath, prefix)
+    def wrapper(*args, **kw):
+        path = kw.get('path')
+        if path is None:
+            logger.debug(f'{func.__name__} has no path input')
+            return
+
+        new_path = func(*args, **kw)
         if new_path is None:
+            logger.debug(f'{func.__name__} returns None')
             return
 
         if new_path.exists():
             logger.error(f'exists: {new_path}')
         else:
-            filepath.rename(new_path)
-            logger.info(f'done: {filepath} --> {new_path}')
+            path.rename(new_path)
+            logger.info(f'done: {path} --> {new_path}')
 
     return wrapper
 
