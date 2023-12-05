@@ -3,7 +3,7 @@ from functools import wraps
 from itertools import chain
 from os.path import isdir, isfile
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import Tuple
 
 import click
 
@@ -30,7 +30,7 @@ def if_exist_then_rename(func: T_JOB_P):
 def preprocess_1(job: T_JOB_P):
     def decorator(func):
         @wraps(func)
-        def wrapper(ctx: click.Context, file: Tuple[str], xfix: Optional[str]):
+        def wrapper(ctx: click.Context, file: Tuple[str], xfix: str | None):
             logger.debug(f'{ctx.obj=}')
             logger.debug(f'{file=}')
             logger.debug(f'{xfix=}')
