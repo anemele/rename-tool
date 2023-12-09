@@ -1,7 +1,30 @@
+from functools import wraps
 from pathlib import Path
 
 from ..log import logger
-from ..pp import if_exist_then_rename
+from ..types import T_JOB_P
+
+
+def if_exist_then_rename(func: T_JOB_P):
+    @wraps(func)
+    def wrapper(path, xfix):
+        try:
+            new_path = func(path, xfix)
+        except ValueError as e:
+            logger.error(e)
+            return
+
+        if new_path is None:
+            logger.debug(f'{func.__name__} returns None')
+            return
+
+        if new_path.exists():
+            logger.error(f'exists: {new_path}')
+        else:
+            path.rename(new_path)
+            logger.info(f'done: {path} --> {new_path}')
+
+    return wrapper
 
 
 @if_exist_then_rename

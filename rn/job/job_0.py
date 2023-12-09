@@ -1,12 +1,25 @@
 import hashlib
 import random
+from functools import wraps
 from pathlib import Path
 
 import filetype
 
 from ..log import logger
-from ..pp import only_file
+from ..types import T_JOB_N
 from .consts import CHAR_SET, NAME_LENGTH
+
+
+def only_file(func: T_JOB_N):
+    @wraps(func)
+    def wrapper(file: Path):
+        if not file.is_file():
+            logger.error(f'not a file: {file}')
+            return
+
+        return func(file)
+
+    return wrapper
 
 
 def rename_random(path: Path):
