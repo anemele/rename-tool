@@ -2,7 +2,7 @@ from typing import Optional
 
 import click
 
-from .job import (
+from .core import (
     rename_add_prefix,
     rename_add_suffix,
     rename_extension,
