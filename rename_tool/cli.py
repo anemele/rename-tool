@@ -5,7 +5,6 @@ import click
 from .core import (
     rename_add_prefix,
     rename_add_suffix,
-    rename_extension,
     rename_lower,
     rename_md5,
     rename_random,
@@ -45,14 +44,6 @@ def cli(ctx: click.Context, only_file: bool, only_dir: bool):
 @click.argument('file', nargs=-1, required=True, type=str)
 @preprocess_0(rename_random)
 def cmd_random(ctx: click.Context, file):
-    ...
-
-
-@cli.command(name='ext', help=rename_extension.__doc__)
-@click.pass_context
-@click.argument('file', nargs=-1, required=True, type=str)
-@preprocess_0(rename_extension)
-def cmd_ext(ctx: click.Context, file):
     ...
 
 

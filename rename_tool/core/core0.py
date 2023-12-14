@@ -3,7 +3,6 @@ import random
 from functools import wraps
 from pathlib import Path
 
-import filetype
 
 from ..log import logger
 from ..types import T_JOB_N
@@ -37,24 +36,6 @@ def rename_random(path: Path):
 
     path.rename(new_path)
     logger.info(f'done: {path} --> {new_path}')
-
-
-@only_file
-def rename_extension(path: Path):
-    """use filetype to determine extension"""
-    content = path.read_bytes()
-    ext = filetype.guess_extension(content)
-
-    if ext is None:
-        logger.error(f'cannot guess extension: {path.name}')
-        return
-
-    new_path = path.with_suffix(f'.{ext}')
-    if new_path == path:
-        logger.warning(f'exists: {new_path}')
-    else:
-        path.rename(new_path)
-        logger.info(f'done: {path} --> {new_path}')
 
 
 @only_file
